@@ -1,0 +1,15 @@
+{
+  "name": "frontend-design",
+  "version": "1.0.0",
+  "description": "A Claude Code skill for creating stunning, branded social media designs — Instagram posts, stories, carousels, LinkedIn banners, Twitter cards, and more.",
+  "main": "export-carousel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer-core": "^24.38.0"
+  }
+}
