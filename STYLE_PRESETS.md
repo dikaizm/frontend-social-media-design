@@ -57,16 +57,16 @@ Curated visual styles for Frontend Social Media Design. Each preset is inspired 
     /* Typography — scales relative to canvas.
        For a 1080×1080 social-media canvas, the `clamp()` defaults below
        are often too small. Use fixed px values instead:
-         --title-size: 72–80px
-         --h2-size:    56–64px
-         --body-size:  24–28px
-         --small-size: 18–22px
-         --micro-size: 14–16px
+         --title-size: 108–120px
+         --h2-size:    84–96px
+         --body-size:  36–42px
+         --small-size: 27–33px
+         --micro-size: 21–24px
        Only use clamp() when the same file must render at multiple sizes. */
-    --title-size: clamp(28px, 5.5cqw, 72px);
-    --h2-size: clamp(22px, 4cqw, 48px);
-    --body-size: clamp(14px, 2.2cqw, 24px);
-    --small-size: clamp(10px, 1.5cqw, 16px);
+    --title-size: clamp(42px, 8.25cqw, 108px);
+    --h2-size: clamp(33px, 6cqw, 72px);
+    --body-size: clamp(21px, 3.3cqw, 36px);
+    --small-size: clamp(15px, 2.25cqw, 24px);
 
     /* Spacing */
     --canvas-padding: clamp(24px, 5cqw, 80px);
