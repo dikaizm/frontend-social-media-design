@@ -239,7 +239,7 @@ assets/
 
 Originally created by [@zarazhangrui](https://github.com/zarazhangrui) for frontend slides with Claude Code.
 
-Adapted for social media design workflows.
+Adapted for social media design workflows by [@dikaizm](https://github.com/dikaizm).
 
 ## License
 
