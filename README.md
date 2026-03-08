@@ -1,19 +1,24 @@
 # Frontend Social Media Design
 
-A Claude Code skill for creating stunning, branded social media designs — Instagram posts, stories, carousels, LinkedIn banners, Twitter cards, and more.
+A Claude Code skill for creating stunning, branded social media designs using React components — Instagram posts, stories, carousels, LinkedIn banners, Twitter cards, and more.
 
 ## What This Does
 
-**Frontend Social Media Design** helps non-designers create beautiful social media graphics without knowing CSS or JavaScript. It uses a "show, don't tell" approach: instead of asking you to describe your aesthetic preferences in words, it generates visual previews and lets you pick what you like.
+**Frontend Social Media Design** helps non-designers create beautiful social media graphics without knowing CSS or JavaScript. It uses a "show, don't tell" approach: instead of asking you to describe your aesthetic preferences in words, it generates React components and visual previews that let you pick what you like.
+
+**v2.0:** Now uses React + TypeScript components with built-in chart libraries (visx, Plotly) for advanced data visualization.
 
 ### Key Features
 
-- **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools, no frameworks.
+- **React Components** - Modern, type-safe components for AI to generate and adapt
 - **Visual Style Discovery** — Can't articulate design preferences? No problem. Pick from generated visual previews.
-- **Carousel Support** — Create multi-page swipeable carousels for Instagram, LinkedIn, and more.
+- **Advanced Charts** - Built-in support for visx and Plotly.js for complex data visualizations
+- **Carousel Support** — Create multi-page swipeable carousels with Framer Motion animations
 - **Unsplash Integration** — Automatically finds and downloads the perfect images for your content via Unsplash API.
 - **Anti-AI-Slop** — Curated distinctive styles that avoid generic AI aesthetics (bye-bye, purple gradients on white).
-- **Export-Ready** — Pixel-perfect designs at exact platform dimensions, ready to screenshot and post.
+- **Export-Ready** - Integrated build and export pipeline (Vite + Puppeteer) for pixel-perfect output
+- **Professional Icons** - Use react-icons, lucide-react, or FontAwesome instead of emoji for polished designs
+- **Dual Audience** - Serves both technical users (React developers) and non-technical users (just export images)
 
 ## Installation
 
@@ -28,9 +33,25 @@ mkdir -p ~/.claude/skills/frontend-social-media
 # Copy the files (or download from this repo)
 cp SKILL.md ~/.claude/skills/frontend-social-media/
 cp STYLE_PRESETS.md ~/.claude/skills/frontend-social-media/
+cp REACT_REFERENCE.md ~/.claude/skills/frontend-social-media/
+cp ICONS.md ~/.claude/skills/frontend-social-media/
 ```
 
 Then use it by typing `/frontend-social-media` in Claude Code.
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+This installs:
+- React 18 + TypeScript
+- Charts: @visx/xychart, react-plotly.js
+- Animations: framer-motion
+- Icons: react-icons, lucide-react
+- Export: puppeteer-core, html2canvas
+- State: zustand
 
 ### Unsplash API Setup (Optional but Recommended)
 
@@ -44,13 +65,23 @@ export UNSPLASH_ACCESS_KEY="your_access_key_here"
 
 The skill will automatically use this to search and download images that match your content. Without it, designs will use CSS-generated visuals (still looks great!).
 
-### Manual Download
-
-1. Download `SKILL.md` and `STYLE_PRESETS.md` from this repo
-2. Place them in `~/.claude/skills/frontend-social-media/`
-3. Restart Claude Code
-
 ## Usage
+
+### How the Skill Works
+
+1. **User Request:** "Create an Instagram post announcing our product launch"
+
+2. **AI Generates:**
+   - React component file (`.tsx`)
+   - Export command to run
+   - Instructions on customizing if needed
+
+3. **User Exports:**
+   ```bash
+   npm run export <design-file> <platform> <format> <output-path>
+   ```
+
+4. **Output:** High-quality image at exact platform dimensions
 
 ### Create a Single Post
 
@@ -62,10 +93,10 @@ The skill will automatically use this to search and download images that match y
 
 The skill will:
 1. Ask about your platform, format, and content
-2. Search Unsplash for a matching background image (if enabled)
-3. Generate 3 visual style previews for you to compare
-4. Create the full design at exact platform dimensions
-5. Open it in your browser for review and export
+2. Generate 3 visual style previews for you to compare
+3. Create a React component with chosen style preset
+4. Provide export command
+5. You run the command → get image
 
 ### Create a Carousel
 
@@ -78,42 +109,69 @@ The skill will:
 The skill will:
 1. Ask about page count and content for each page
 2. Help you pick a consistent visual style
-3. Source images from Unsplash for visual variety (optional)
-4. Generate a multi-page carousel with swipe navigation and page dots
-5. Preview in browser — export individual pages as screenshots
+3. Generate React components with Carousel structure
+4. Include charts/data visualizations if needed
+5. Provide export command for each slide
+
+### Using Professional Icons
+
+The skill supports multiple icon libraries:
+
+**Recommended:** lucide-react (Modern, clean icons)
+- `npm install lucide-react`
+- Tree-shakeable, excellent TypeScript support
+
+**Alternative:** react-icons (Comprehensive library)
+- `npm install react-icons`
+- 100,000+ icons from multiple libraries
+
+**Usage:**
+```tsx
+import { Icon } from './src/components/ui/Icon';
+
+<Icon name="check-circle" library="lucide" size="medium" color="#4CAF50" />
+```
+
+See `ICONS.md` for complete icon reference and style-specific recommendations.
 
 ### Export to Image
 
-#### Option A — Automated (recommended for carousels)
+**Automated Export (Recommended):**
 
-An export script is included. It uses `puppeteer-core` with your existing system Chrome — no Chromium download needed.
+The skill includes an integrated export pipeline using Vite + Puppeteer.
 
-**One-time setup:**
 ```bash
-npm install puppeteer-core
+# Instagram post
+npm run export src/examples/instagram-post-example.tsx instagram post-square ./output.png
+
+# LinkedIn carousel (exports first slide)
+npm run export src/examples/linkedin-carousel-example.tsx linkedin carousel ./slide-01.png
+
+# Infographic
+npm run export src/examples/infographic-example.tsx instagram post-square ./infographic.png
 ```
 
-**Export all carousel slides:**
-```bash
-# PNG (default)
-node export-carousel.js
+**Export Process:**
+1. Vite compiles React component to JS/CSS
+2. HTML wrapper is created
+3. Puppeteer opens HTML in headless Chrome
+4. Screenshot captures `#export-root` at 2× scale
+5. PNG is saved to specified path
 
-# JPEG at a specific quality
-node export-carousel.js --format jpg --quality 95
+**Quality:**
+- 2× device pixel ratio (2160×2160 for Instagram 1080×1080)
+- PNG format for lossless quality
+- Exact platform dimensions
 
-# Custom output folder or file
-node export-carousel.js --out ./my-slides --file ./my-carousel.html
-```
+### For React Developers
 
-Output files are named `slide-01.png`, `slide-02.png`, etc. and saved to `./carousel-export/` by default. Images are captured at **2× device pixel ratio** (2160×2160 px) for crisp Instagram-ready quality.
+Technical users can:
+- Take generated React components and use them in their own apps
+- Modify components for interactivity
+- Use components as templates for design systems
+- Integrate with their build pipelines
 
-#### Option B — Manual (DevTools)
-
-1. Open the HTML file in Chrome
-2. Open DevTools → **Device Mode** (Ctrl/Cmd+Shift+M)
-3. Set width and height to exact canvas dimensions (e.g. 1080×1080)
-4. `Ctrl/Cmd+Shift+P` → **"Capture screenshot"**
-5. Repeat for each slide (use the dot indicators to navigate)
+All components are fully typed with TypeScript interfaces.
 
 ## Supported Platforms
 
@@ -136,6 +194,7 @@ Output files are named `slide-01.png`, `slide-02.png`, etc. and saved to `./caro
 - **Dark Botanical** — Elegant, sophisticated. Beautiful for luxury brands.
 
 ### Light Themes
+- **Clean Prism** — Clean white layout with orange-purple prism gradient. Perfect for modern, minimalist designs.
 - **Notebook Tabs** — Editorial, organized. Perfect for educational carousels.
 - **Pastel Geometry** — Friendly, approachable. Great for product features.
 - **Split Pastel** — Playful, modern. Ideal for lifestyle content.
@@ -147,45 +206,47 @@ Output files are named `slide-01.png`, `slide-02.png`, etc. and saved to `./caro
 - **Swiss Modern** — Clean, Bauhaus-inspired. Perfect for infographics.
 - **Paper & Ink** — Literary, thoughtful. Beautiful for quote posts.
 
-## Output Example
+## Component Library
 
-Each design is a single, self-contained HTML file:
+### Base Components
+- **Canvas** - Fixed-size canvas container
+- **Carousel** - Multi-page carousel with Framer Motion
+- **CarouselPage** - Single carousel page
+- **CanvasContent** - Flexible content wrapper
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Fonts, CSS variables, all styles inline -->
-    <style>
-        :root {
-            --canvas-width: 1080px;
-            --canvas-height: 1080px;
-            /* ... theme colors, fonts, spacing */
-        }
-    </style>
-</head>
-<body>
-    <div class="canvas">
-        <!-- Unsplash background image -->
-        <img src="assets/bg.jpg" class="canvas-bg-image" alt="">
-        <div class="canvas-overlay canvas-overlay--dark"></div>
+### Style Presets
+All 13 style presets as React components:
+- **BoldSignal**, **ElectricStudio**, **CreativeVoltage**, **DarkBotanical**
+- **CleanPrism**, **NotebookTabs**, **PastelGeometry**, **SplitPastel**, **VintageEditorial**
+- **NeonCyber**, **TerminalGreen**, **TerminalBlue**, **SwissModern**, **PaperInk**
 
-        <div class="canvas-content">
-            <h1>Your Headline</h1>
-            <p>Your content here</p>
-        </div>
+### Chart Components
+- **VisxChart** - Custom bar/line charts using visx
+- **PlotlyChart** - Complex charts using Plotly.js
+- **Heatmap** - Heatmap visualization
+- **MetricCard** - KPI display with icon
+- **ProgressBar** - Progress bar with label
 
-        <a class="unsplash-credit" href="...">Photo by Name on Unsplash</a>
-    </div>
-</body>
-</html>
+### UI Components
+- **Icon** - Icon wrapper for react-icons and lucide-react
+- **ExportWrapper** - Export wrapper with `#export-root` ID
+
+See `REACT_REFERENCE.md` for complete component documentation with examples.
+
+## Example Designs
+
+See `src/examples/` for complete working examples:
+
+1. **instagram-post-example.tsx** - Bold Signal with icon
+2. **linkedin-carousel-example.tsx** - Electric Studio with VisxChart, MetricCard, ProgressBar
+3. **infographic-example.tsx** - Heatmap with trend stats
+4. **tech-launch-carousel-example.tsx** - Neon Cyber 4-page tech launch carousel
+5. **clean-prism-example.tsx** - Clean Prism with feature list and hover effects
+
+Run examples:
+```bash
+npm run export src/examples/clean-prism-example.tsx instagram post-square ./clean-prism.png
 ```
-
-Carousels include additional JavaScript for:
-- Swipe/touch navigation
-- Arrow key navigation
-- Page indicator dots
-- Page counter (e.g., "2 / 5")
 
 ## Philosophy
 
@@ -193,53 +254,52 @@ This skill was born from the belief that:
 
 1. **You don't need to be a designer to make beautiful things.** You just need to react to what you see.
 
-2. **Dependencies are debt.** A single HTML file will work in 10 years. A React project from 2019? Good luck.
+2. **Components are better than templates.** AI can adapt and compose React components to create custom designs, not just fill in templates.
 
-3. **Generic is forgettable.** Every social media post should feel custom-crafted, not template-generated.
+3. **Rich ecosystem enables creativity.** Access to visx, Plotly, Framer Motion means more creative possibilities.
 
-4. **Images matter.** Unsplash integration means your designs get real, high-quality photography without leaving your editor.
+4. **Generic is forgettable.** Every social media post should feel custom-crafted, not template-generated.
+
+5. **Images matter.** Unsplash integration means your designs get real, high-quality photography without leaving your editor.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `SKILL.md` | Main skill instructions for Claude Code |
-| `STYLE_PRESETS.md` | Reference file with 12 curated visual styles |
-| `export-carousel.js` | Node.js script to export all carousel slides as PNG/JPG |
+| `SKILL.md` | Main skill workflow documentation (React-based) |
+| `STYLE_PRESETS.md` | Style preset details with React templates |
+| `REACT_REFERENCE.md` | Complete component library reference |
+| `ICONS.md` | Icon usage guide with react-icons |
+| `package.json` | Dependencies and npm scripts |
+| `export-scripts/export-design.ts` | Export pipeline (Vite + Puppeteer) |
 
-## Assets
-
-Place all images referenced by carousel HTML files inside the `assets/` folder alongside the HTML file.
+## Component Structure
 
 ```
-assets/
-├── logo-[brand].png               # Brand logo shown in every slide header
-├── demo-[feature-1].png           # Screenshot of the main product / landing page (used on cover)
-├── demo-[feature-2].png           # Screenshot of a key feature dashboard
-├── demo-[feature-3].png           # Screenshot of a form or data entry page
-├── viz-[chart-name-1].png         # Chart visualization — e.g. sector distribution
-└── viz-[chart-name-2].png         # Chart visualization — e.g. risk or metric breakdown
+src/
+├── components/
+│   ├── canvas/          # Base layout components
+│   ├── styles/          # 12 style preset components
+│   ├── charts/          # Data visualization components
+│   ├── ui/              # Reusable UI components
+│   └── export/          # Export wrapper
+├── hooks/              # Custom React hooks
+├── lib/               # Constants and utilities
+└── examples/           # Complete example designs
 ```
-
-**Rules for the `assets/` folder:**
-- Reference images with relative paths: `src="assets/filename.png"`
-- Place the folder next to the HTML file (not inside a subdirectory)
-- Keep original filenames — the HTML files reference them directly
-- The `export-carousel.js` script requires asset files to be present locally (the `--allow-file-access-from-files` Chrome flag is set automatically)
-- When adding a new carousel project, create a new `assets/` folder alongside its HTML file
 
 ## Requirements
 
 - [Claude Code](https://claude.ai/claude-code) CLI
+- Node.js 18+ and npm
+- Google Chrome (for Puppeteer export)
 - For Unsplash images: Free API key from [unsplash.com/developers](https://unsplash.com/developers)
-- For image processing: Python with `Pillow` library (optional)
-- For automated export: Node.js + `npm install puppeteer-core` + Google Chrome installed
 
 ## Credits
 
 Originally created by [@zarazhangrui](https://github.com/zarazhangrui) for frontend slides with Claude Code.
 
-Adapted for social media design workflows by [@dikaizm](https://github.com/dikaizm).
+Migrated to React + TypeScript by [@dikaizm](https://github.com/dikaizm).
 
 ## License
 

@@ -1,11 +1,11 @@
 ---
 name: frontend-social-media
-description: Create stunning, branded social media designs as single-page HTML files — Instagram posts/stories/carousels, LinkedIn banners, Twitter cards, and more. Supports Unsplash API for automatic image sourcing. Helps non-designers discover their aesthetic through visual exploration rather than abstract choices.
+description: Create stunning, branded social media designs as React components — Instagram posts/stories/carousels, LinkedIn banners, Twitter cards, and more. Supports Unsplash API for automatic image sourcing. Helps non-designers discover their aesthetic through visual exploration rather than abstract choices.
 ---
 
 # Frontend Social Media Design Skill
 
-Create zero-dependency, visually striking HTML designs for social media content that can be screenshotted or exported as images. This skill helps non-designers discover their preferred aesthetic through visual exploration ("show, don't tell"), then generates production-quality social media graphics.
+Create React + TypeScript component-based designs for social media content that can be built and exported as images. This skill helps non-designers discover their preferred aesthetic through visual exploration ("show, don't tell"), then generates production-quality React components and provides export commands.
 
 ## Core Philosophy
 
@@ -14,6 +14,64 @@ Create zero-dependency, visually striking HTML designs for social media content 
 3. **Distinctive Design** — Avoid generic "AI slop" aesthetics. Every design should feel custom-crafted.
 4. **Production Quality** — Code should be well-commented, accessible, and pixel-perfect at target dimensions.
 5. **Canvas Sizing (CRITICAL)** — Every design MUST use exact fixed dimensions matching the target social media platform. No scrolling, no overflow.
+6. **Custom Icons** — Use professional icon libraries or inline SVGs instead of emoji icons for a polished, professional look.
+
+---
+
+## Project Structure
+
+This skill uses a React + TypeScript + Vite build system. The project is organized to separate reference examples from user-generated designs.
+
+### Directory Layout
+
+```
+frontend-social-media-design/
+├── src/
+│   ├── components/          # Reusable base components
+│   │   ├── canvas/         # Canvas, Carousel, CarouselPage, CanvasContent
+│   │   ├── styles/         # Style preset components (13 presets)
+│   │   ├── charts/         # Chart components (Visx, Plotly, Heatmap, etc.)
+│   │   ├── ui/            # UI components (Icon, ExportWrapper)
+│   │   └── export/        # Export wrapper component
+│   ├── examples/           # Reference examples (DO NOT ADD TO THIS FOLDER)
+│   │   ├── instagram-post-example.tsx
+│   │   ├── linkedin-carousel-example.tsx
+│   │   ├── infographic-example.tsx
+│   │   ├── tech-launch-carousel-example.tsx
+│   │   └── clean-prism-example.tsx
+│   ├── generated/          # USER-GENERATED DESIGNS (SAVE HERE)
+│   │   ├── [user-requested-design].tsx
+│   │   └── [another-user-design].tsx
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/               # Constants and utilities
+│   │   ├── constants.ts
+│   │   └── utils.ts
+│   └── export-scripts/     # Export scripts
+│       └── export-design.ts
+├── public/                # Static assets
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+└── tailwind.config.js
+```
+
+### CRITICAL: Where to Save Generated Designs
+
+**ALWAYS save user-requested social media designs in `src/generated/`**
+
+- ❌ **DO NOT** save in `src/examples/` — This folder is for reference examples only
+- ✅ **DO** save in `src/generated/` — This is where user designs go
+- The `examples/` folder contains sample designs that demonstrate style presets and components
+- The `generated/` folder contains new designs created in response to user requests
+
+**Example:**
+```bash
+# ✅ CORRECT - Save user design here
+src/generated/ai-agents-vs-traditional-software.tsx
+
+# ❌ INCORRECT - Never save user designs in examples
+src/examples/ai-agents-vs-traditional-software.tsx
+```
 
 ---
 
@@ -88,9 +146,346 @@ Every design MUST include the base CSS from `STYLE_PRESETS.md`. Key requirements
 
 ---
 
+## Icon Guidelines (CRITICAL)
+
+**Replace emoji icons with professional icons for a polished, professional appearance.** Emojis are great for documentation, but designs should use proper icon libraries or custom SVGs.
+
+### Available Icon Options
+
+#### Option 1: React Icons (For React Projects)
+
+Best for: React-based designs, component libraries, interactive prototypes
+
+**Installation:**
+```bash
+npm install react-icons
+```
+
+**Usage in React components:**
+```jsx
+import { FaCheckCircle, FaTimesCircle, FaInfoCircle } from 'react-icons/fa';
+import { MdDownload, MdShare } from 'react-icons/md';
+import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
+
+// Example usage
+<div className="feature-icon">
+  <FaCheckCircle size={48} color="#4CAF50" />
+</div>
+
+<div className="download-section">
+  <MdDownload size={36} />
+</div>
+```
+
+**Popular Icon Libraries in react-icons:**
+- **Font Awesome:** `react-icons/fa` — General purpose icons
+- **Material Design:** `react-icons/md` — Material Design icons
+- **Heroicons:** `react-icons/hi` — Clean, modern icons
+- **Lucide:** `react-icons/lucide` — Consistent, elegant icons
+- **Feather:** `react-icons/fc` — Minimal feather icons
+
+**Advantages:**
+- Tree-shakeable (only import what you use)
+- Highly customizable (size, color, weight)
+- Consistent design system
+- Excellent TypeScript support
+
+#### Option 2: Icon Fonts (CDN) — Recommended for Static HTML
+
+Best for: Static HTML designs, zero-dependency projects, quick implementation
+
+**Font Awesome (Free CDN):**
+```html
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <i class="fa-solid fa-check-circle text-green"></i>
+  <i class="fa-solid fa-times-circle text-red"></i>
+  <i class="fa-solid fa-download"></i>
+  <i class="fa-solid fa-share-nodes"></i>
+  <i class="fa-solid fa-star"></i>
+</body>
+
+<style>
+  .text-green { color: #4CAF50; }
+  .text-red { color: #f44336; }
+  i {
+    font-size: clamp(24px, 4cqw, 48px);
+  }
+</style>
+```
+
+**Phosphor Icons (Modern, Clean):**
+```html
+<head>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+  <i class="ph ph-check-circle"></i>
+  <i class="ph ph-download-simple"></i>
+  <i class="ph ph-share-network"></i>
+  <i class="ph ph-star"></i>
+</body>
+```
+
+**Lucide Icons (Minimal, Consistent):**
+```html
+<head>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <i data-lucide="check-circle"></i>
+  <i data-lucide="download"></i>
+  <i data-lucide="share"></i>
+  <i data-lucide="star"></i>
+</body>
+
+<script>
+  lucide.createIcons();
+</script>
+```
+
+#### Option 3: Inline SVGs — Most Flexible
+
+Best for: Maximum control, zero external dependencies, custom styling
+
+**Example SVG icons:**
+```html
+<!-- Check Circle -->
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <circle cx="12" cy="12" r="10" />
+  <path d="M9 12l2 2 4-4" />
+</svg>
+
+<!-- Download -->
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <polyline points="7 10 12 15 17 10" />
+  <line x1="12" y1="15" x2="12" y2="3" />
+</svg>
+
+<!-- Share -->
+<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <circle cx="18" cy="5" r="3" />
+  <circle cx="6" cy="12" r="3" />
+  <circle cx="18" cy="19" r="3" />
+  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+</svg>
+
+<style>
+  .icon {
+    width: clamp(24px, 4cqw, 48px);
+    height: clamp(24px, 4cqw, 48px);
+  }
+</style>
+```
+
+### Common Icon Use Cases in Social Media Designs
+
+| Purpose | Recommended Icons |
+|---------|-------------------|
+| Checkmarks/Done | `fa-check`, `fa-check-circle`, `check-circle` (Phosphor) |
+| Errors/Invalid | `fa-times`, `fa-times-circle`, `x-circle` (Phosphor) |
+| Downloads | `fa-download`, `download-simple` (Phosphor) |
+| Sharing | `fa-share`, `share-network` (Phosphor) |
+| Stars/Ratings | `fa-star`, `star` (Phosphor) |
+| Info/Help | `fa-info-circle`, `info` (Phosphor) |
+| Warnings | `fa-exclamation-triangle`, `warning` (Phosphor) |
+| Success | `fa-check-double`, `check-fat` (Phosphor) |
+| Navigation | `fa-arrow-right`, `arrow-right` (Phosphor) |
+| Settings | `fa-gear`, `gear` (Phosphor) |
+| Search | `fa-search`, `magnifying-glass` (Phosphor) |
+| User/Profile | `fa-user`, `user` (Phosphor) |
+| Time/Clock | `fa-clock`, `clock` (Phosphor) |
+| Location | `fa-location-dot`, `map-pin` (Phosphor) |
+
+### Icon Sizing Guidelines
+
+Use container-query-based sizing for responsive icons:
+
+```css
+.icon {
+  width: clamp(24px, 4cqw, 48px);  /* 24px at minimum, 48px at maximum */
+  height: clamp(24px, 4cqw, 48px);
+}
+
+.icon-small {
+  width: clamp(16px, 2.5cqw, 24px);
+  height: clamp(16px, 2.5cqw, 24px);
+}
+
+.icon-large {
+  width: clamp(48px, 6cqw, 72px);
+  height: clamp(48px, 6cqw, 72px);
+}
+```
+
+### Icon Color Guidelines
+
+Match icon colors to your theme:
+
+```css
+.icon {
+  color: var(--text-primary);
+}
+
+.icon-accent {
+  color: var(--accent);
+}
+
+.icon-success {
+  color: #4CAF50;
+}
+
+.icon-error {
+  color: #f44336;
+}
+
+.icon-warning {
+  color: #FF9800;
+}
+```
+
+### Migration Guide: From Emojis to Professional Icons
+
+| Emoji | Professional Icon Alternative |
+|-------|------------------------------|
+| ✅ | `<i class="fa-solid fa-check-circle"></i>` or `<i class="ph ph-check-circle"></i>` |
+| ❌ | `<i class="fa-solid fa-times-circle"></i>` or `<i class="ph ph-x-circle"></i>` |
+| ℹ️ | `<i class="fa-solid fa-info-circle"></i>` or `<i class="ph ph-info"></i>` |
+| ⚠️ | `<i class="fa-solid fa-exclamation-triangle"></i>` or `<i class="ph ph-warning"></i>` |
+| 🎨 | `<i class="fa-solid fa-palette"></i>` or `<i class="ph ph-palette"></i>` |
+| 📁 | `<i class="fa-solid fa-folder"></i>` or `<i class="ph ph-folder"></i>` |
+| 📱 | `<i class="fa-solid fa-mobile-screen"></i>` or `<i class="ph ph-device-mobile"></i>` |
+| 📸 | `<i class="fa-solid fa-camera"></i>` or `<i class="ph ph-camera"></i>` |
+| 📄 | `<i class="fa-solid fa-file-lines"></i>` or `<i class="ph ph-file-text"></i>` |
+| 🎯 | `<i class="fa-solid fa-bullseye"></i>` or `<i class="ph ph-crosshair"></i>` |
+| ⬇️ | `<i class="fa-solid fa-download"></i>` or `<i class="ph ph-download-simple"></i>` |
+| ⬆️ | `<i class="fa-solid fa-upload"></i>` or `<i class="ph ph-upload-simple"></i>` |
+| ➡️ | `<i class="fa-solid fa-arrow-right"></i>` or `<i class="ph ph-arrow-right"></i>` |
+
+---
+
 ## Phase 0: Detect Mode
 
 First, determine what the user wants:
+
+### Clarification Requirement (CRITICAL)
+
+**If the user's request is ambiguous or incomplete, you MUST ask clarifying questions BEFORE proceeding.** Never make assumptions about platform, format, style, or content.
+
+**When to ask for clarification:**
+
+- User doesn't specify platform (Instagram, LinkedIn, Twitter, etc.)
+- User doesn't specify format (post size, carousel, story, etc.)
+- User doesn't specify style preference
+- User doesn't provide content details
+- User's request is too general ("make a social media post")
+- User requests a carousel but doesn't specify number of pages
+- User provides vague or unclear instructions
+
+**Clarification questions to ask:**
+
+Use a single AskUserQuestion call with these specific questions:
+
+**Question 1: Platform**
+- Header: "Platform"
+- Question: "Which platform is this social media post for?"
+- Options:
+  - "Instagram" — Posts, stories, carousels, reels covers
+  - "LinkedIn" — Posts, carousel documents, banners
+  - "Twitter / X" — Post images, header banners
+  - "Facebook" — Post images, story covers
+  - "YouTube" — Thumbnails, channel art
+  - "Pinterest" — Pins, idea pins
+  - "TikTok" — Video covers
+  - "Custom" — Specify custom dimensions
+
+**Question 2: Format**
+- Header: "Format"
+- Question: "What format/size do you need?"
+- Options:
+  - "Square Post (1080×1080)" — Standard 1:1 post
+  - "Portrait Post (1080×1350)" — Taller 4:5 post
+  - "Story/Reel (1080×1920)" — Vertical 9:16 format
+  - "Carousel (1080×1080)" — Multi-page swipeable post (will ask page count next)
+  - "Banner/Header" — Wide profile banner
+  - "Thumbnail (1280×720)" — Video thumbnail
+  - "Custom" — Specify your own dimensions
+
+**Question 3: Content Type**
+- Header: "Content"
+- Question: "What kind of content should this design showcase?"
+- Options:
+  - "Quote / Text" — Inspirational quote, tip, or text-heavy content
+  - "Feature List" — Product features, benefits, key points
+  - "Image-Heavy" — Hero image with minimal text overlay
+  - "Data / Metrics" — Charts, statistics, infographics
+  - "Announcement / Launch" — Event, product launch, news
+  - "Comparison" — Before/after, pros/cons, side-by-side
+  - "Educational / How-to" — Tips, steps, tutorial
+
+**Question 4: Style Preference (if applicable)**
+- Header: "Style"
+- Question: "How would you like the design to look and feel?"
+- Options:
+  - "Show me options" — Generate 3 style previews for you to compare (recommended)
+  - "I know what I want" — Let me pick from the preset list directly
+
+**Question 5: Image Handling** (Only for carousel/multi-page designs)
+- Header: "Images"
+- Question: "How should images be sourced?"
+- Options:
+  - "Use Unsplash (Recommended)" — Auto-find images via API
+  - "I have my own images" — You'll provide image file paths
+  - "No images needed" — Text-only design with CSS visuals
+
+**Question 6: Carousel Page Count** (Only if carousel selected)
+- Header: "Pages"
+- Question: "How many pages should this carousel have?"
+- Options:
+  - "3-5 pages" — Short carousel
+  - "6-8 pages" — Medium carousel
+  - "9-10 pages" — Long carousel (max 10 for Instagram)
+
+**Example clarification flow:**
+
+```
+User: "Create a social media post"
+
+AI: 
+Q1: Which platform is this for?
+  [ ] Instagram  [ ] LinkedIn  [ ] Twitter / X  [ ] Facebook
+
+Q2: What format?
+  [ ] Square Post  [ ] Portrait Post  [ ] Story  [ ] Carousel
+
+Q3: Content type?
+  [ ] Quote/Text  [ ] Feature List  [ ] Image-Heavy
+  [ ] Data/Metrics  [ ] Announcement
+
+Q4: Style preference?
+  [ ] Show me options  [ ] I know what I want
+
+User selects answers, then AI proceeds with Phase 1 (Content Discovery).
+```
+
+**Do NOT proceed to design generation until:**
+- Platform is specified
+- Format is specified
+- Content type is specified
+- Style approach is decided
+
+---
+
+### Mode Detection
+
+Once you have the required information, determine which mode to proceed with:
 
 **Mode A: Single Post**
 - User wants to create a single social media graphic
@@ -1035,31 +1430,63 @@ Generate the complete carousel HTML with:
 
 When the design is complete:
 
-1. **Clean up temporary files**
-   - Delete `.claude-design/style-previews/` if it exists
+1. **Save the design**
+   - **CRITICAL:** Save in `src/generated/` folder (NOT in `src/examples/`)
+   - Use descriptive filename: `[topic]-[style]-[platform].tsx`
+   - Example: `ai-agents-comparison-cleanprism-instagram-portrait.tsx`
 
-2. **Open the design**
-   - Use `open [filename].html` to launch in browser
+2. **Start dev server** (if not already running)
+   - Run `npm run dev` from project root
+   - Open http://localhost:5173/ in browser
 
 3. **Provide summary**
 ```
 Your design is ready! 🎨
 
-📁 File: [filename].html
+📁 File: src/generated/[filename].tsx
 🎨 Style: [Style Name]
 📱 Platform: [Platform] — [Format]
 📐 Dimensions: [W] × [H] px
 📸 Images: [Unsplash / User-provided / None]
 
+**To view design:**
+- Dev server running at: http://localhost:5173/
+- Navigate to view in browser
+
 **To export as image:**
-- Open in browser → Right-click → Inspect → Device mode
-- Set exact dimensions ([W] × [H])
+
+**Method 1: Automated export (Recommended)**
+```bash
+# Export single post
+npm run export src/generated/my-design.tsx instagram post-square ./my-design.png
+
+# Export portrait post
+npm run export src/generated/my-design.tsx instagram post-portrait ./my-design.png
+
+# Export story/reel
+npm run export src/generated/my-design.tsx instagram story ./my-design.png
+```
+
+**Command arguments:**
+- `src/generated/[filename].tsx` — Path to the design file
+- `[platform]` — instagram, linkedin, twitter, facebook, youtube, pinterest, tiktok
+- `[format]` — post-square, post-portrait, story, carousel, post, thumbnail, etc.
+- `./output.png` — Where to save the exported image
+
+**Example:**
+```bash
+npm run export src/generated/industrial-ai-future.tsx instagram post-portrait ./industrial-ai.png
+```
+
+**Method 2: Manual browser screenshot**
+- Open http://localhost:5173/ in browser
+- Right-click → Inspect → Device Mode
+- Set exact dimensions (e.g., 1080 × 1350)
 - Screenshot (Cmd+Shift+P → "Capture screenshot")
 
 **To customize:**
-- Colors: Change `:root` CSS variables
-- Fonts: Update the font link
-- Content: Edit text directly in the HTML
+- Edit the component directly in src/generated/[filename].tsx
+- Changes auto-reload in dev server
 ```
 
 For carousels, also include:
@@ -1068,12 +1495,31 @@ For carousels, also include:
 
 **Navigation (in browser preview):**
 - Arrow keys (← →) to navigate
-- Click dots or arrows
+- Click dots to jump to page
 - Swipe on touch devices
 
 **To export carousel pages individually:**
-- Screenshot each page at [W] × [H] dimensions
-- Or use automated screenshot script (Puppeteer/Playwright)
+
+**Method 1: Automated export (Recommended)**
+```bash
+# Export entire carousel
+npm run export src/generated/my-carousel.tsx instagram carousel ./carousel-slide.png
+
+# This exports one slide at a time. Rename output file for each slide:
+npm run export src/generated/my-carousel.tsx instagram carousel ./slide-1.png
+npm run export src/generated/my-carousel.tsx instagram carousel ./slide-2.png
+# ... repeat for each slide
+```
+
+**Pro tip:** Navigate through the carousel in browser preview, then run export command for each slide you want to capture.
+
+**Method 2: Manual browser screenshot**
+- Open http://localhost:5173/ in browser
+- Navigate to desired slide (click dots, use arrows, or swipe)
+- Right-click → Inspect → Device Mode
+- Set exact dimensions (e.g., 1080 × 1350)
+- Screenshot (Cmd+Shift+P → "Capture screenshot")
+- Repeat for each slide
 ```
 
 If Unsplash was used:
@@ -1173,6 +1619,110 @@ Animations are optional for social media designs. They're useful for:
     background-size: 50px 50px;
 }
 ```
+
+---
+
+## Export Commands Reference
+
+Quick reference for exporting designs to images.
+
+### Export Command Syntax
+
+```bash
+npm run export <design-file> <platform> <format> <output-path>
+```
+
+### Platform & Format Options
+
+| Platform | Formats Available | Example Command |
+|----------|------------------|----------------|
+| **Instagram** | `post-square` (1080×1080), `post-portrait` (1080×1350), `story` (1080×1920), `carousel` (1080×1080) | `npm run export src/design.tsx instagram post-square ./output.png` |
+| **LinkedIn** | `post` (1200×628), `carousel` (1080×1080) | `npm run export src/design.tsx linkedin post ./output.png` |
+| **Twitter / X** | `post` (1200×675), `header` (1500×500) | `npm run export src/design.tsx twitter post ./output.png` |
+| **Facebook** | `post` (1200×630), `story` (1080×1920) | `npm run export src/design.tsx facebook post ./output.png` |
+| **YouTube** | `thumbnail` (1280×720) | `npm run export src/design.tsx youtube thumbnail ./output.png` |
+| **Pinterest** | `pin` (1000×1500) | `npm run export src/design.tsx pinterest pin ./output.png` |
+| **TikTok** | `cover` (1080×1920) | `npm run export src/design.tsx tiktok cover ./output.png` |
+
+### Real-World Examples
+
+**Instagram Square Post:**
+```bash
+npm run export src/generated/ai-agents-comparison.tsx instagram post-square ./ai-agents.png
+```
+
+**Instagram Portrait Post:**
+```bash
+npm run export src/generated/industrial-ai-future.tsx instagram post-portrait ./industrial-ai.png
+```
+
+**Instagram Story/Reel:**
+```bash
+npm run export src/generated/my-story.tsx instagram story ./my-story.png
+```
+
+**LinkedIn Post:**
+```bash
+npm run export src/generated/professional-post.tsx linkedin post ./linkedin-post.png
+```
+
+**YouTube Thumbnail:**
+```bash
+npm run export src/generated/video-thumbnail.tsx youtube thumbnail ./thumbnail.png
+```
+
+**Pinterest Pin:**
+```bash
+npm run export src/generated/inspiration-pin.tsx pinterest pin ./inspiration.png
+```
+
+### Carousel Export (Multiple Slides)
+
+For carousels, export each slide individually by renaming the output file:
+
+```bash
+# Slide 1
+npm run export src/generated/my-carousel.tsx instagram carousel ./slide-1.png
+
+# Slide 2 (navigate in browser to slide 2, then export)
+npm run export src/generated/my-carousel.tsx instagram carousel ./slide-2.png
+
+# Slide 3
+npm run export src/generated/my-carousel.tsx instagram carousel ./slide-3.png
+
+# ... continue for all slides
+```
+
+### Export Tips
+
+**1. Chrome/Chromium Required:**
+The export script requires Google Chrome, Chromium, Brave, or Microsoft Edge installed on your system. It will auto-detect the browser.
+
+**2. High-Quality Output:**
+- Export script uses `deviceScaleFactor: 2` for crisp 2× resolution
+- PNG format for lossless quality (Instagram displays at 2×)
+- For Instagram, 1080×1080 outputs as 2160×2160 for optimal display
+
+**3. Batch Export (Advanced):**
+Create a simple shell script to export multiple designs:
+
+```bash
+#!/bin/bash
+# Export all designs in a folder
+
+for file in src/generated/*.tsx; do
+  filename=$(basename "$file" .tsx)
+  npm run export "$file" instagram post-square "./exports/$filename.png"
+done
+```
+
+Save as `export-all.sh`, make executable (`chmod +x export-all.sh`), and run.
+
+**4. Troubleshooting Exports:**
+- **Chrome not found:** Install Google Chrome from https://www.google.com/chrome/
+- **File not found:** Ensure design file path is correct (use `src/generated/` prefix)
+- **Invalid platform/format:** Check platform and format names match the reference table above
+- **Image appears blurry:** This is expected in browser preview. Exported image will be crisp at 2× resolution
 
 ---
 

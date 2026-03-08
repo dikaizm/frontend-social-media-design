@@ -4,6 +4,287 @@ Curated visual styles for Frontend Social Media Design. Each preset is inspired 
 
 ---
 
+## Icon System
+
+**Use professional icon libraries instead of emoji icons for polished, professional designs.**
+
+### Recommended Icon Libraries for Each Style
+
+#### For Static HTML Designs (Zero Dependencies)
+
+**Font Awesome (CDN):**
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+```
+
+**Phosphor Icons (Recommended):**
+```html
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+```
+
+**Lucide Icons (Minimal):**
+```html
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+```
+
+#### For React Projects
+
+**React Icons:**
+```bash
+npm install react-icons
+```
+
+**Icon Library Mappings:**
+
+| Style | Font Awesome | Phosphor | Lucide |
+|-------|-------------|----------|--------|
+| Bold Signal | `fa-solid fa-asterisk`, `fa-solid fa-bolt` | `ph-lightning`, `ph-asterisk` | `zap`, `star` |
+| Electric Studio | `fa-solid fa-layer-group`, `fa-solid fa-shapes` | `ph-squares-four`, `ph-shapes` | `layers`, `box` |
+| Creative Voltage | `fa-solid fa-bolt`, `fa-solid fa-fire` | `ph-lightning`, `ph-fire` | `zap`, `flame` |
+| Dark Botanical | `fa-solid fa-leaf`, `fa-solid fa-seedling` | `ph-leaf`, `ph-plant` | `leaf`, `flower-2` |
+| Notebook Tabs | `fa-solid fa-bookmark`, `fa-solid fa-tags` | `ph-bookmark`, `ph-tag` | `bookmark`, `tag` |
+| Pastel Geometry | `fa-solid fa-shapes`, `fa-solid fa-cube` | `ph-squares-four`, `ph-cube` | `box`, `square` |
+| Split Pastel | `fa-solid fa-heart`, `fa-solid fa-star` | `ph-heart`, `ph-star` | `heart`, `star` |
+| Vintage Editorial | `fa-solid fa-quote-left`, `fa-solid fa-feather` | `ph-quotes`, `ph-feather` | `quote`, `feather` |
+| Neon Cyber | `fa-solid fa-microchip`, `fa-solid fa-network-wired` | `ph-cpu`, `ph-network` | `cpu`, `share-2` |
+| Terminal Green | `fa-solid fa-terminal`, `fa-solid fa-code` | `ph-terminal-window`, `ph-code` | `terminal`, `code` |
+| Terminal Blue | `fa-solid fa-database`, `fa-solid fa-chart-line` | `ph-database`, `ph-chart-line-up` | `database`, `trending-up` |
+| Swiss Modern | `fa-solid fa-shapes`, `fa-solid fa-crop` | `ph-shapes`, `ph-crop` | `shapes`, `crop` |
+| Paper & Ink | `fa-solid fa-feather-pointed`, `fa-solid fa-pen-nib` | `ph-feather`, `ph-pen-nib` | `feather`, `pen-tool` |
+
+### Icon Implementation Examples
+
+#### Example 1: Font Awesome Icons
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  .icon {
+    font-size: clamp(24px, 4cqw, 48px);
+    color: var(--text-primary);
+  }
+
+  .icon-accent {
+    color: var(--accent);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--content-gap);
+  }
+</style>
+
+<div class="feature-item">
+  <i class="fa-solid fa-check-circle icon icon-success"></i>
+  <span>Feature description</span>
+</div>
+```
+
+#### Example 2: Phosphor Icons (Recommended)
+```html
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<style>
+  .icon {
+    font-size: clamp(24px, 4cqw, 48px);
+    color: var(--text-primary);
+  }
+
+  .icon-large {
+    font-size: clamp(48px, 6cqw, 72px);
+  }
+
+  .icon-accent {
+    color: var(--accent);
+  }
+</style>
+
+<div class="icon-container">
+  <i class="ph ph-check-circle icon icon-success"></i>
+  <i class="ph ph-download-simple icon"></i>
+  <i class="ph ph-star icon-large icon-accent"></i>
+</div>
+```
+
+#### Example 3: React Icons (React Projects)
+```jsx
+import { FaCheckCircle, FaDownload, FaStar } from 'react-icons/fa';
+import { PhCheckCircle, PhDownloadSimple, PhStar } from 'react-icons/ph';
+
+// Using Font Awesome icons
+<div className="feature-item">
+  <FaCheckCircle size={48} color="#4CAF50" />
+  <span>Feature description</span>
+</div>
+
+// Using Phosphor icons (recommended)
+<div className="icon-container">
+  <PhCheckCircle size={48} weight="fill" />
+  <PhDownloadSimple size={48} weight="regular" />
+  <PhStar size={72} weight="bold" color="#FFC107" />
+</div>
+```
+
+### Icon Sizing System
+
+All icons should use container-query-based sizing:
+
+```css
+/* Base icon size */
+.icon {
+  width: clamp(24px, 4cqw, 48px);
+  height: clamp(24px, 4cqw, 48px);
+  font-size: clamp(24px, 4cqw, 48px);
+}
+
+/* Icon variants */
+.icon-small {
+  width: clamp(16px, 2.5cqw, 24px);
+  height: clamp(16px, 2.5cqw, 24px);
+  font-size: clamp(16px, 2.5cqw, 24px);
+}
+
+.icon-medium {
+  width: clamp(32px, 5cqw, 56px);
+  height: clamp(32px, 5cqw, 56px);
+  font-size: clamp(32px, 5cqw, 56px);
+}
+
+.icon-large {
+  width: clamp(48px, 6cqw, 72px);
+  height: clamp(48px, 6cqw, 72px);
+  font-size: clamp(48px, 6cqw, 72px);
+}
+
+.icon-xlarge {
+  width: clamp(64px, 8cqw, 96px);
+  height: clamp(64px, 8cqw, 96px);
+  font-size: clamp(64px, 8cqw, 96px);
+}
+```
+
+### Icon Color System
+
+```css
+/* Theme colors */
+.icon {
+  color: var(--text-primary);
+}
+
+.icon-accent {
+  color: var(--accent);
+}
+
+.icon-secondary {
+  color: var(--text-secondary);
+}
+
+/* Semantic colors */
+.icon-success {
+  color: #4CAF50;
+}
+
+.icon-error {
+  color: #f44336;
+}
+
+.icon-warning {
+  color: #FF9800;
+}
+
+.icon-info {
+  color: #2196F3;
+}
+```
+
+### Common Icon Patterns
+
+#### Feature Lists with Icons
+```html
+<div class="feature-list">
+  <div class="feature-item">
+    <i class="ph ph-check-circle icon icon-success"></i>
+    <div class="feature-content">
+      <h3>Feature Title</h3>
+      <p>Description of the feature</p>
+    </div>
+  </div>
+  <div class="feature-item">
+    <i class="ph ph-check-circle icon icon-success"></i>
+    <div class="feature-content">
+      <h3>Another Feature</h3>
+      <p>Description of another feature</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--content-gap);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(12px, 2.5cqw, 24px);
+  }
+
+  .feature-content h3 {
+    font-size: var(--h2-size);
+    margin-bottom: 4px;
+  }
+
+  .feature-content p {
+    font-size: var(--body-size);
+    color: var(--text-secondary);
+  }
+</style>
+```
+
+#### Icon Grid
+```html
+<div class="icon-grid">
+  <div class="icon-card">
+    <i class="ph ph-lightning icon-large icon-accent"></i>
+    <span class="icon-label">Fast</span>
+  </div>
+  <div class="icon-card">
+    <i class="ph ph-shield-check icon-large icon-accent"></i>
+    <span class="icon-label">Secure</span>
+  </div>
+  <div class="icon-card">
+    <i class="ph ph-users icon-large icon-accent"></i>
+    <span class="icon-label">Collaborative</span>
+  </div>
+</div>
+
+<style>
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--content-gap);
+  }
+
+  .icon-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.5cqw, 16px);
+  }
+
+  .icon-label {
+    font-size: var(--body-size);
+    color: var(--text-primary);
+  }
+</style>
+```
+
+---
+
 ## ⚠️ CRITICAL: Canvas Sizing (Non-Negotiable)
 
 **Every design MUST use a fixed canvas size matching the target platform. The canvas is the final output — it must look pixel-perfect at the exact dimensions.**
