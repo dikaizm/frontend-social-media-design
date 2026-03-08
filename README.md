@@ -134,16 +134,19 @@ Output files are named `slide-01.png`, `slide-02.png`, etc. and saved to `./caro
 - **Electric Studio** — Clean, professional. Perfect for agency portfolios.
 - **Creative Voltage** — Energetic, retro-modern. Ideal for event promotions.
 - **Dark Botanical** — Elegant, sophisticated. Beautiful for luxury brands.
+- **Neural Research** — Minimal, academic, AI/tech-forward. Perfect for ML research carousels and model explainers.
 
 ### Light Themes
 - **Notebook Tabs** — Editorial, organized. Perfect for educational carousels.
 - **Pastel Geometry** — Friendly, approachable. Great for product features.
 - **Split Pastel** — Playful, modern. Ideal for lifestyle content.
 - **Vintage Editorial** — Witty, personality-driven. Perfect for personal brands.
+- **Stripe Blueprint** — Clean, startup-engineering. Great for AI educational carousels and SaaS features.
 
 ### Specialty
 - **Neon Cyber** — Futuristic, techy. Great for SaaS announcements.
-- **Terminal Green** — Developer-focused. Ideal for dev tips and tutorials.
+- **Terminal Green** — Developer-focused, hacker aesthetic. Ideal for dev tips and tutorials.
+- **Terminal Blue** — Developer-focused, corporate-tech. Great for enterprise AI and data-heavy carousels.
 - **Swiss Modern** — Clean, Bauhaus-inspired. Perfect for infographics.
 - **Paper & Ink** — Literary, thoughtful. Beautiful for quote posts.
 

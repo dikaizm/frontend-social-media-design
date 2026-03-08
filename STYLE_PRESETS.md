@@ -436,6 +436,139 @@ Before finalizing any design, verify:
 
 ---
 
+### 13. Neural Research
+
+**Vibe:** Minimal, academic, precise, AI/tech-forward — DeepMind / OpenAI research aesthetic
+
+**Layout:** Deep navy canvas, left-aligned typographic hierarchy. Monospaced section labels above headings. Subtle dot-grid background, neon blue radial glow in one corner, and an abstract node-network SVG diagram decorating the bottom-right corner.
+
+**Typography:**
+- Display: `Space Grotesk` (700/800)
+- Body: `IBM Plex Sans` (300/400)
+- Labels/Mono: `IBM Plex Mono` (400/500)
+
+**Font CDN:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap">
+```
+
+**Colors:**
+```css
+:root {
+    --bg-primary:    #060b18;
+    --bg-secondary:  #0c1325;
+    --bg-panel:      #101c30;
+    --border-dim:    rgba(59, 130, 246, 0.12);
+    --border-bright: rgba(99, 155, 255, 0.30);
+
+    --accent-blue:   #3b82f6;
+    --accent-indigo: #6366f1;
+    --glow:          rgba(59, 130, 246, 0.18);
+
+    --text-primary:  #eef2ff;
+    --text-secondary:#94a3c8;
+    --text-muted:    #4a5a7a;
+    --text-label:    #5a8adf;
+
+    --font-display:  'Space Grotesk', sans-serif;
+    --font-body:     'IBM Plex Sans', sans-serif;
+    --font-mono:     'IBM Plex Mono', monospace;
+}
+```
+
+**Signature Elements:**
+- Deep navy background (`#060b18`) + subtle 40px dot-grid overlay (CSS only)
+- Neon blue radial glow in top-right corner: `radial-gradient(ellipse at 85% 15%, rgba(59,130,246,0.18) 0%, transparent 55%)`
+- Abstract node-edge network drawn as inline SVG — 5 nodes, thin `stroke-width="1"`, bottom-right corner
+- Monospaced section labels above every heading: `§ 01 — ARCHITECTURE`, `FIGURE 2.` etc.
+- Thin 1px `rgba(59,130,246,0.15)` horizontal rules between sections
+- Metric/stat callouts: large number in `--accent-blue`, unit/label in `--text-secondary`
+
+**Dot-Grid Background (CSS — include before `.canvas-content`):**
+```css
+.canvas-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(59,130,246,0.20) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    opacity: 0.55;
+    pointer-events: none;
+}
+```
+
+**Abstract Node Network (inline SVG — place as last child of `.canvas`, above z-index 1):**
+```html
+<svg class="node-net" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- Edges -->
+  <line x1="60"  y1="50"  x2="190" y2="120" stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+  <line x1="190" y1="120" x2="340" y2="70"  stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+  <line x1="190" y1="120" x2="280" y2="240" stroke="rgba(99,102,241,0.30)" stroke-width="1"/>
+  <line x1="60"  y1="50"  x2="150" y2="210" stroke="rgba(99,102,241,0.20)" stroke-width="1"/>
+  <line x1="340" y1="70"  x2="280" y2="240" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+  <line x1="150" y1="210" x2="280" y2="240" stroke="rgba(99,102,241,0.18)" stroke-width="1"/>
+  <!-- Nodes -->
+  <circle cx="60"  cy="50"  r="4" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="190" cy="120" r="7" fill="#6366f1" opacity="0.95"/>
+  <circle cx="340" cy="70"  r="4" fill="#3b82f6" opacity="0.9"/>
+  <circle cx="150" cy="210" r="3" fill="#5a8adf" opacity="0.75"/>
+  <circle cx="280" cy="240" r="5" fill="#3b82f6" opacity="0.85"/>
+  <!-- Outer glow rings on key nodes -->
+  <circle cx="190" cy="120" r="14" fill="none" stroke="rgba(99,102,241,0.22)" stroke-width="1"/>
+  <circle cx="60"  cy="50"  r="9"  fill="none" stroke="rgba(59,130,246,0.18)" stroke-width="1"/>
+</svg>
+```
+
+```css
+.node-net {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 42%;
+    height: 38%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.85;
+}
+```
+
+**Section Label Pattern:**
+```html
+<span class="section-label">§ 01 — ARCHITECTURE</span>
+<h2>Multi-Head Attention</h2>
+```
+
+```css
+.section-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--small-size);
+    letter-spacing: 0.14em;
+    color: var(--text-label);
+    text-transform: uppercase;
+    margin-bottom: 0.5em;
+    opacity: 0.85;
+}
+```
+
+**Stat/Metric Callout Pattern:**
+```html
+<div class="stat-callout">
+  <span class="stat-number">94.7</span><span class="stat-unit">% accuracy</span>
+</div>
+```
+
+```css
+.stat-callout   { display: flex; align-items: baseline; gap: 0.25em; }
+.stat-number    { font-family: var(--font-display); font-size: var(--title-size); font-weight: 700; color: var(--accent-blue); }
+.stat-unit      { font-family: var(--font-mono); font-size: var(--small-size); color: var(--text-secondary); letter-spacing: 0.05em; }
+```
+
+**Best For:** AI/ML research carousels, academic paper summaries, model architecture explainers, tech company announcements, LinkedIn thought-leadership for researchers
+
+---
+
 ## Light Themes
 
 ### 5. Notebook Tabs
@@ -566,6 +699,144 @@ Before finalizing any design, verify:
 
 ---
 
+### 14. Stripe Blueprint
+
+**Vibe:** Modern, clean, engineering-forward, startup-polished — Stripe / Linear / Vercel blog aesthetic
+
+**Layout:** White or very light grey canvas. Bold left-aligned headline with a prominent blue gradient accent line beneath it. Content organised in clean card rows or a two-column grid. Thin 1px separator lines between sections. Optional subtle dot-grid or slight noise texture on the background.
+
+**Typography:**
+- Display: `Inter` (700/800) — the one exception where Inter IS correct: it defines this aesthetic
+- Body: `Inter` (400/500)
+- Mono/code labels: `JetBrains Mono` (400)
+
+> **Note:** Inter is banned as a generic choice, but it is the *signature* font of the Stripe/Linear engineering aesthetic. Using it here is intentional and correct.
+
+**Font CDN:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+```
+
+**Colors:**
+```css
+:root {
+    --bg-primary:    #ffffff;
+    --bg-surface:    #f6f8fa;
+    --bg-card:       #ffffff;
+    --border:        #e4e8ee;
+    --border-strong: #c8d0db;
+
+    --accent-blue:   #0070f3;
+    --accent-violet: #7c3aed;
+    --gradient-hero: linear-gradient(135deg, #0070f3 0%, #7c3aed 100%);
+    --gradient-text: linear-gradient(90deg, #0070f3, #7c3aed);
+
+    --text-primary:  #0f1117;
+    --text-secondary:#4b5563;
+    --text-muted:    #9ca3b0;
+    --text-code:     #0070f3;
+
+    --font-display:  'Inter', sans-serif;
+    --font-body:     'Inter', sans-serif;
+    --font-mono:     'JetBrains Mono', monospace;
+}
+```
+
+**Signature Elements:**
+- Pure white or `#f6f8fa` background — no gradients on the canvas itself
+- **Hero gradient underline:** a 3–4px bar under the main headline using `--gradient-hero`
+- Subtle dot-grid background (optional, very low opacity):
+  ```css
+  .canvas-bg-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,112,243,0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      z-index: 0;
+      pointer-events: none;
+  }
+  ```
+- Feature/step cards: white with `border: 1px solid var(--border)`, `border-radius: 10px`, subtle `box-shadow: 0 1px 4px rgba(0,0,0,0.06)`
+- Gradient text for key numbers or call-outs:
+  ```css
+  .gradient-text {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+  ```
+- Inline code/label chips using `--font-mono`, `background: #f0f4ff`, `color: var(--text-code)`, `border-radius: 4px`, `padding: 2px 8px`
+- Thin 1px `var(--border)` horizontal rules between major sections
+- Step/number badges: circle with `--gradient-hero` background, white number inside
+
+**Numbered Step Badge Pattern:**
+```html
+<div class="step-row">
+  <div class="step-badge">01</div>
+  <div class="step-content">
+    <h3>Train your model</h3>
+    <p>Start with a clean dataset and consistent labels.</p>
+  </div>
+</div>
+```
+
+```css
+.step-row   { display: flex; align-items: flex-start; gap: 20px; }
+.step-badge {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-hero);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+}
+```
+
+**Feature Card Pattern:**
+```html
+<div class="feature-card">
+  <i class="ph ph-rocket icon icon-accent"></i>
+  <h3>Fast inference</h3>
+  <p>Sub-100ms latency on standard GPUs.</p>
+</div>
+```
+
+```css
+.feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(20px, 2.5cqw, 36px);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.icon-accent { color: var(--accent-blue); }
+```
+
+**Headline + Gradient Underline Pattern:**
+```html
+<div class="hero-headline">
+  <h1>How transformers work</h1>
+  <div class="headline-bar"></div>
+</div>
+```
+
+```css
+.hero-headline { display: flex; flex-direction: column; gap: 12px; }
+.headline-bar  { height: 4px; width: 72px; border-radius: 2px; background: var(--gradient-hero); }
+```
+
+**Best For:** AI/ML educational carousels, startup product announcements, engineering blog graphics, LinkedIn tech content, SaaS feature breakdowns
+
+---
+
 ## Specialty Themes
 
 ### 9. Neon Cyber
@@ -691,6 +962,8 @@ Before finalizing any design, verify:
 | Neon Cyber | Clash Display | Satoshi | Fontshare |
 | Terminal Green | JetBrains Mono | JetBrains Mono | JetBrains |
 | Terminal Blue | JetBrains Mono | JetBrains Mono | JetBrains |
+| Neural Research | Space Grotesk | IBM Plex Sans | Google |
+| Stripe Blueprint | Inter | Inter | Google |
 
 ---
 

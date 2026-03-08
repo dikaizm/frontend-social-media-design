@@ -257,6 +257,8 @@ If user has content, ask them to share it (text, bullet points, etc.).
 | Terminal Green | Developer-focused | Dev tips, coding tutorials |
 | Swiss Modern | Minimal, precise | Data visualizations, infographics |
 | Paper & Ink | Literary, thoughtful | Quote posts, storytelling carousels |
+| Neural Research | Academic, AI/tech-forward | Research carousels, model explainers, ML content |
+| Stripe Blueprint | Clean, startup-engineering | AI educational carousels, SaaS features, tech blogs |
 
 ### Step 2.0: Style Path Selection
 
@@ -300,6 +302,8 @@ Based on mood, generate **3 distinct style previews** as mini HTML files. Each p
 | Excited/Energized | "Creative Voltage", "Neon Cyber", "Split Pastel" |
 | Calm/Focused | "Notebook Tabs", "Paper & Ink", "Swiss Modern" |
 | Inspired/Moved | "Dark Botanical", "Vintage Editorial", "Pastel Geometry" |
+| Academic/Tech | "Neural Research", "Terminal Blue", "Swiss Modern" |
+| Impressed/Confident (light) | "Stripe Blueprint", "Electric Studio", "Swiss Modern" |
 
 **IMPORTANT: Never use generic patterns:**
 - Purple gradients on white backgrounds
@@ -518,29 +522,48 @@ def resize_max(input_path, output_path, max_dim=1080):
 
 ### File Structure
 
+**All generated HTML files go inside the `generated/` folder, organised by project name. Exports (PNG/JPG frames) go inside `output/{project-name}/`.**
+
 For single designs:
 ```
-design.html
-assets/
-└── image.jpg        # Unsplash downloads or user-provided images
+generated/
+└── {project-name}/
+    ├── design.html
+    └── assets/
+        └── image.jpg        # Unsplash downloads or user-provided images
+output/
+└── {project-name}/
+    └── slide-01.png         # Exported frames
 ```
 
 For carousels:
 ```
-carousel.html
-export-carousel.js   # Export script (shared across projects)
-assets/
-├── logo.png         # Brand logo (appears in every slide header)
-├── demo-*.png       # Product screenshots / demo images
-└── viz-*.png        # Charts, data visualizations
+generated/
+└── {project-name}/
+    ├── carousel.html
+    └── assets/
+        ├── logo.png         # Brand logo (appears in every slide header)
+        ├── demo-*.png       # Product screenshots / demo images
+        └── viz-*.png        # Charts, data visualizations
+export-carousel.js           # Export script (workspace root — shared)
+output/
+└── {project-name}/
+    ├── slide-01.png
+    ├── slide-02.png
+    └── ...                  # One file per carousel page
 ```
 
+**Naming the project folder:**
+Derive `{project-name}` from the content topic — use lowercase kebab-case:
+- "5 AI productivity tips" → `ai-productivity-tips`
+- "Product launch carousel" → `product-launch`
+- "Q1 results infographic" → `q1-results`
+
 **`assets/` folder rules:**
-- Always place `assets/` as a **sibling** of the HTML file (never inside a subdirectory)
+- Always place `assets/` as a **sibling** of the HTML file inside `generated/{project-name}/`
 - Reference images with **relative paths only**: `src="assets/filename.png"`
 - **Keep original filenames** — HTML files reference them directly
 - The `export-carousel.js` export script uses Chrome's `--allow-file-access-from-files` flag, so local `assets/` files are loaded correctly without a server
-- For each new carousel project, create a fresh `assets/` folder alongside its HTML file
 - Typical contents:
   | File pattern | Purpose |
   |---|---|
@@ -561,6 +584,12 @@ assets/
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=...">
+
+    <!-- Icons (choose one; Phosphor preferred) -->
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <!-- Font Awesome Free (alternative) -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
 
     <style>
         /* ===========================================
@@ -658,6 +687,12 @@ assets/
 
     <!-- Fonts -->
     <link rel="stylesheet" href="...">
+
+    <!-- Icons (choose one; Phosphor preferred) -->
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <!-- Font Awesome Free (alternative) -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
 
     <style>
         :root {
@@ -897,6 +932,96 @@ assets/
 </html>
 ```
 
+### CDN Icon Libraries
+
+Prefer CDN-hosted icon libraries over emoji for decorative icons, feature bullets, and UI accents. Icon fonts are crisp at any size, respect the design's color palette, and export cleanly as screenshots.
+
+**Recommended Libraries:**
+
+| Library | `<head>` include | Usage |
+|---------|-----------------|-------|
+| **Phosphor Icons** (preferred) | `<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>` | `<i class="ph ph-arrow-right"></i>` |
+| **Font Awesome Free** | `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">` | `<i class="fa-solid fa-rocket"></i>` |
+| **Bootstrap Icons** | `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">` | `<i class="bi bi-lightning-fill"></i>` |
+
+**When to use icons vs. emoji:**
+
+| Use **CDN Icons** | Use **Emoji** |
+|-------------------|---------------|
+| Feature bullets, tip lists | User-supplied text that already has emoji |
+| UI signals (arrows, checks, badges) | Playful/casual brand voice where emoji fits |
+| Infographic data points | One-off designs with no consistent icon set |
+| Educational / professional carousels | Cultural expressions (e.g. flags, faces) |
+
+**Sizing icons for social media canvases:**
+
+Icon fonts render as text — size them with `font-size`:
+
+```css
+.icon    { font-size: clamp(32px, 4.5cqw, 56px); line-height: 1; }
+.icon-sm { font-size: clamp(20px, 2.5cqw, 32px); line-height: 1; }
+.icon-lg { font-size: clamp(48px, 6cqw,   80px); line-height: 1; }
+.icon-xl { font-size: clamp(64px, 8cqw,  120px); line-height: 1; }
+.icon-accent { color: var(--accent); }
+```
+
+**Icon + text bullet pattern (Phosphor):**
+
+```html
+<ul class="feature-list">
+  <li><i class="ph-fill ph-check-circle icon icon-accent"></i> Benefit one</li>
+  <li><i class="ph-fill ph-check-circle icon icon-accent"></i> Benefit two</li>
+  <li><i class="ph-fill ph-check-circle icon icon-accent"></i> Benefit three</li>
+</ul>
+```
+
+```css
+.feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--content-gap);
+}
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: var(--body-size);
+}
+```
+
+**Icon-only grid pattern (Font Awesome):**
+
+```html
+<div class="icon-grid">
+  <div class="icon-card">
+    <i class="fa-solid fa-bolt icon-lg icon-accent"></i>
+    <span>Fast</span>
+  </div>
+  <div class="icon-card">
+    <i class="fa-solid fa-shield-halved icon-lg icon-accent"></i>
+    <span>Secure</span>
+  </div>
+  <div class="icon-card">
+    <i class="fa-solid fa-sliders icon-lg icon-accent"></i>
+    <span>Flexible</span>
+  </div>
+</div>
+```
+
+**Phosphor icon weights** — match to the design style:
+
+| Class prefix | Weight | When to use |
+|---|---|---|
+| `ph-thin` | Thin | Minimal / elegant designs |
+| `ph-light` | Light | Clean, airy layouts |
+| `ph` (default) | Regular | General purpose |
+| `ph-bold` | Bold | Strong, attention-grabbing |
+| `ph-fill` | Filled | High-contrast, solid shapes |
+| `ph-duotone` | Duotone | Two-tone accent icons |
+
+---
+
 ### Carousel Design Rules
 
 When creating carousel content, follow these guidelines:
@@ -943,7 +1068,45 @@ For social media carousels, omit prev/next arrow buttons by default. They appear
 - Keyboard arrow keys for desktop
 Only add arrow buttons if the user explicitly requests them.
 
-**6. Dense Multi-Section Slides (Data/Results pages):**
+**7. Brand Placement — Top of Every Slide:**
+Place the post branding (logo, brand name, and/or website URL) at the **top** of every slide as a fixed-position header element (`position: absolute; top: <padding>`). This ensures instant brand recognition as readers swipe through.
+- Use `position: absolute` so it doesn't push content down
+- Align logo to the left, optional brand tag/URL to the right
+- Keep brand elements subtle (low opacity, small size) — they should not compete with the headline
+- Ensure slide content `padding-top` is large enough to clear the brand header
+
+```css
+.brand-header {
+    position: absolute;
+    top: 36px;
+    left: var(--canvas-padding);
+    right: var(--canvas-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 5;
+}
+```
+
+**8. Swipe Instruction & Slide Number — Bottom of Every Slide:**
+Place the slide number counter and any swipe/navigation hint text at the **bottom** of every slide:
+- Slide counter (e.g. `1 / 10`) — `position: absolute; bottom: <padding>; right: <padding>`
+- Swipe hint text (e.g. "Swipe →") — only on the cover slide (Slide 1), bottom-left or bottom-center
+- Dot indicators — positioned just above the counter (`bottom` value slightly higher than the counter)
+
+```css
+.carousel-counter {
+    position: absolute;
+    bottom: 40px;
+    right: var(--canvas-padding);
+    font-family: var(--font-mono);
+    font-size: var(--small-size);
+    color: rgba(255,255,255,0.5);
+    z-index: 10;
+}
+```
+
+**9. Dense Multi-Section Slides (Data/Results pages):**
 When two related sections naturally belong together (e.g., system diagram + comparison table), they can share one carousel page. Use this pattern:
 - Compact section header (`font-size` 24–36px instead of the full `--h2-size`)
 - A thin 1px divider line between sections
@@ -1038,25 +1201,39 @@ When the design is complete:
 1. **Clean up temporary files**
    - Delete `.claude-design/style-previews/` if it exists
 
-2. **Open the design**
-   - Use `open [filename].html` to launch in browser
+2. **Save generated file** to `generated/{project-name}/`
+   - HTML file: `generated/{project-name}/design.html` (or `carousel.html`)
+   - Assets: `generated/{project-name}/assets/`
+   - Create the folder if it does not exist
 
-3. **Provide summary**
+3. **Open the design**
+   - Use `open generated/{project-name}/design.html` to launch in browser
+
+4. **For carousels — export frames** to `output/{project-name}/`:
+   ```bash
+   node export-carousel.js \
+     --file generated/{project-name}/carousel.html \
+     --out  output/{project-name} \
+     --format png
+   ```
+   Creates `output/{project-name}/slide-01.png`, `slide-02.png`, etc.
+
+5. **Provide summary**
 ```
-Your design is ready! 🎨
+Your design is ready!
 
-📁 File: [filename].html
-🎨 Style: [Style Name]
-📱 Platform: [Platform] — [Format]
-📐 Dimensions: [W] × [H] px
-📸 Images: [Unsplash / User-provided / None]
+Generated file : generated/{project-name}/design.html
+Style          : [Style Name]
+Platform       : [Platform] — [Format]
+Dimensions     : [W] × [H] px
+Images         : [Unsplash / User-provided / None]
 
-**To export as image:**
+To export as image:
 - Open in browser → Right-click → Inspect → Device mode
 - Set exact dimensions ([W] × [H])
 - Screenshot (Cmd+Shift+P → "Capture screenshot")
 
-**To customize:**
+To customize:
 - Colors: Change `:root` CSS variables
 - Fonts: Update the font link
 - Content: Edit text directly in the HTML
@@ -1064,22 +1241,22 @@ Your design is ready! 🎨
 
 For carousels, also include:
 ```
-📄 Pages: [count]
+Pages          : [count]
+Exported to    : output/{project-name}/
 
-**Navigation (in browser preview):**
+Navigation (in browser preview):
 - Arrow keys (← →) to navigate
 - Click dots or arrows
 - Swipe on touch devices
 
-**To export carousel pages individually:**
-- Screenshot each page at [W] × [H] dimensions
-- Or use automated screenshot script (Puppeteer/Playwright)
+Export command:
+  node export-carousel.js --file generated/{project-name}/carousel.html --out output/{project-name}
 ```
 
 If Unsplash was used:
 ```
-📸 Unsplash photos used — attribution included in design
-   Photographer: [Name] (unsplash.com/@handle)
+Unsplash photos used — attribution included in design
+  Photographer: [Name] (unsplash.com/@handle)
 ```
 
 ---
