@@ -238,6 +238,12 @@ assets/
 - For image processing: Python with `Pillow` library (optional)
 - For automated export: Node.js + `npm install puppeteer-core` + Google Chrome installed
 
+## Generated Content Example
+
+See this skill in action — all carousels on **[@stelarealab](https://www.instagram.com/stelarealab/)** are generated using this AI skill.
+
+[![stelarealab on Instagram](https://img.shields.io/badge/Instagram-%40stelarealab-E1306C?style=flat&logo=instagram&logoColor=white)](https://www.instagram.com/stelarealab/)
+
 ## Credits
 
 Originally created by [@zarazhangrui](https://github.com/zarazhangrui) for frontend slides with Claude Code.
