@@ -199,17 +199,30 @@ function resolveFile(filePath) {
         for (let i = 0; i < totalPages; i++) {
             // Navigate to slide i instantly (no animation)
             await page.evaluate((index) => {
-                const track = document.getElementById('carouselTrack');
+                // Find track by common IDs or class
+                const track = document.getElementById('carouselTrack') || 
+                              document.getElementById('track') || 
+                              document.querySelector('.carousel-track');
+                
                 if (!track) return;
-                track.style.transition = 'none';
-                track.style.transform = `translateX(-${index * 100}%)`;
 
+                track.style.transition = 'none';
+                
+                // Calculate slide width for pixel-perfect translation
+                // (Percentage based transforms fail if the track is wider than the viewport)
+                const firstPage = track.querySelector('.carousel-page');
+                const slideWidth = firstPage ? firstPage.offsetWidth : 1080;
+                
+                track.style.transform = `translateX(-${index * slideWidth}px)`;
+
+                // Update UI elements if they exist
                 const dots = document.querySelectorAll('.carousel-dot');
                 dots.forEach((d, di) => d.classList.toggle('active', di === index));
 
                 const counter = document.getElementById('carouselCounter');
                 if (counter) {
-                    counter.textContent = `${index + 1} / ${document.querySelectorAll('.carousel-page').length}`;
+                    const total = document.querySelectorAll('.carousel-page').length;
+                    counter.textContent = `${index + 1} / ${total}`;
                 }
             }, i);
 
