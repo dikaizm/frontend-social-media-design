@@ -96,13 +96,13 @@ npm install puppeteer-core
 **Export all carousel slides:**
 ```bash
 # PNG (default)
-node export-carousel.js
+node export-design.js --file ./generated/project/carousel.html
 
 # JPEG at a specific quality
-node export-carousel.js --format jpg --quality 95
+node export-design.js --file ./generated/project/carousel.html --format jpg --quality 95
 
-# Custom output folder or file
-node export-carousel.js --out ./my-slides --file ./my-carousel.html
+# Custom output folder
+node export-design.js --file ./generated/project/carousel.html --out ./output/my-slides
 ```
 
 Output files are named `slide-01.png`, `slide-02.png`, etc. and saved to `./carousel-export/` by default. Images are captured at **2× device pixel ratio** (2160×2160 px) for crisp Instagram-ready quality.
@@ -208,7 +208,7 @@ This skill was born from the belief that:
 |------|---------|
 | `SKILL.md` | Main skill instructions for Claude Code |
 | `STYLE_PRESETS.md` | Reference file with 12 curated visual styles |
-| `export-carousel.js` | Node.js script to export all carousel slides as PNG/JPG |
+| `export-design.js` | Node.js script to export all carousel slides as PNG/JPG |
 
 ## Assets
 
@@ -228,7 +228,7 @@ assets/
 - Reference images with relative paths: `src="assets/filename.png"`
 - Place the folder next to the HTML file (not inside a subdirectory)
 - Keep original filenames — the HTML files reference them directly
-- The `export-carousel.js` script requires asset files to be present locally (the `--allow-file-access-from-files` Chrome flag is set automatically)
+- The `export-design.js` script requires asset files to be present locally (the `--allow-file-access-from-files` Chrome flag is set automatically)
 - When adding a new carousel project, create a new `assets/` folder alongside its HTML file
 
 ## Requirements
